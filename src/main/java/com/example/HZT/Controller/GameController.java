@@ -22,5 +22,7 @@ public class GameController {
     @PostMapping("/execute")
     public PlayerState executeMoves(@RequestBody List<String> commands) {
         return gameService.processCommands(commands);
+
+        
     }
 }
