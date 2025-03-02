@@ -7,8 +7,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class HztApplication {
 
 	public static void main(String[] args) {
-
+		int port = Integer.parseInt(System.getenv("PORT"));
 		SpringApplication.run(HztApplication.class, args);
+		
 	}
 
 }
