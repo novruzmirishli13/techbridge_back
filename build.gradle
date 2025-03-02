@@ -38,3 +38,7 @@ dependencies {
 tasks.named('test') {
 	useJUnitPlatform()
 }
+
+bootJar {
+    archiveFileName = 'HZT-0.0.1-SNAPSHOT.jar'
+}
