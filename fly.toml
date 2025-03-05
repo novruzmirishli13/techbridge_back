@@ -1,4 +1,4 @@
-app = "your-app-name"  # Uygulamanızın adı
+app = "hzt"  # Uygulamanızın adı
 
 [[services]]
   internal_port = 8080  # Uygulamanızın dinlediği iç port
