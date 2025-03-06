@@ -5,7 +5,7 @@ FROM eclipse-temurin:21-jdk
 WORKDIR /app
 
 # Jar dosyasını kopyala
-COPY build/libs/techbridge_back-0.0.1-SNAPSHOT.jar app.jar
+COPY build/libs/HZT-0.0.1-SNAPSHOT.jar app.jar
 
 # Uygulama portu (Spring Boot için genelde 8080)
 EXPOSE 8080
