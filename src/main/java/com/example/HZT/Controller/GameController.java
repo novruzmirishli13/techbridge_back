@@ -2,12 +2,13 @@ package com.example.HZT.Controller;
 
 import java.util.List;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.HZT.Entity.PlayerState;
 import com.example.HZT.Service.GameService;
 
 @RestController
@@ -20,9 +21,30 @@ public class GameController {
     }
 
     @PostMapping("/execute")
-    public PlayerState executeMoves(@RequestBody List<String> commands) {
-        return gameService.processCommands(commands);
+    public ResponseEntity<Object> executeMoves(@RequestBody List<String> commands) {
+       
+        gameService.processCommands(commands);
 
         
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(new ResponseMessage("It's Working Woleyyy"));
+    }
+
+   
+    public static class ResponseMessage {
+        private String message;
+
+        public ResponseMessage(String message) {
+            this.message = message;
+        }
+
+        public String getMessage() {
+            return message;
+        }
+
+        public void setMessage(String message) {
+            this.message = message;
+        }
     }
 }
