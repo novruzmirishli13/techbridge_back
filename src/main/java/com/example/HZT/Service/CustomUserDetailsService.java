@@ -1,8 +1,9 @@
 package com.example.HZT.Service;
 
-import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.stereotype.Service;
 
+import com.example.HZT.Entity.User;
+import com.example.HZT.Exception.NotFoundException;
 import com.example.HZT.Repository.UserRepository;
 
 @Service
