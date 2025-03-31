@@ -8,7 +8,7 @@ public class HztApplication {
 
     public static void main(String[] args) {
         String portEnv = System.getenv("PORT");
-        int port = 8080;
+        int port = 8081;
 
         if (portEnv != null && !portEnv.isEmpty()) {
             try {
