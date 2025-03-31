@@ -1,6 +1,7 @@
 package com.example.HZT.Controller;
 
 
+import org.apache.coyote.BadRequestException;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,7 +23,7 @@ public class AuthController {
 	}
 
 	@PostMapping("/register")
-	public String registerUser(@RequestBody RegisterRequestDto registerRequest) {
+	public String registerUser(@RequestBody RegisterRequestDto registerRequest) throws BadRequestException {
 		return authService.registerUser(registerRequest);
 	}
 

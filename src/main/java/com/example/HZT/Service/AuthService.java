@@ -1,10 +1,11 @@
 package com.example.HZT.Service;
 
 import org.apache.coyote.BadRequestException;
-import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.example.HZT.Entity.User;
+import com.example.HZT.Exception.NotFoundException;
 import com.example.HZT.Model.AuthResponse;
 import com.example.HZT.Model.LoginRequestDto;
 import com.example.HZT.Model.RegisterRequestDto;
@@ -24,7 +25,7 @@ public class AuthService {
 		this.jwtUtils = jwtUtils;
 	}
 
-	public String registerUser(RegisterRequestDto registerRequest) {
+	public String registerUser(RegisterRequestDto registerRequest) throws BadRequestException {
 		if (userRepository.existsByUsername(registerRequest.getUsername())) {
 			throw new BadRequestException("Username is already taken");
 		}
@@ -42,7 +43,7 @@ public class AuthService {
 	public AuthResponse loginUser(LoginRequestDto loginRequest) {
 		User user = userRepository.findByUsername(loginRequest.getUsername())
 				.orElseThrow(() ->{
-					throw new NotFoundException("User not found with given id");
+					throw new NotFoundException("User not found");
 				});
 
 		if (!passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {
