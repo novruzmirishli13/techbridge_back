@@ -4,12 +4,12 @@ app = "techbridge-back"
   JAVA_TOOL_OPTIONS = "-XX:+UseContainerSupport -Dfile.encoding=UTF-8"
 
 [[services]]
-  internal_port = 8080
+  internal_port = 8081
   protocol = "tcp"
 
   [[services.ports]]
     handlers = ["http"]
-    port = 80
+    port = 81
 
   [[services.ports]]
     handlers = ["tls", "http"]
