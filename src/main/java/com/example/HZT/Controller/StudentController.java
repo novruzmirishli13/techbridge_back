@@ -9,6 +9,11 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.HZT.Service.ParentService;
 import com.example.HZT.Service.RegionService;
 import com.example.HZT.Service.StudentService;
+
+
+import org.springframework.web.bind.annotation.CrossOrigin;
+
+@CrossOrigin(origins = "*") 
 @RestController
 @RequestMapping("/api")
 public class StudentController {

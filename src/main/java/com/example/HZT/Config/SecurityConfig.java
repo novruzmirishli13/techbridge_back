@@ -36,7 +36,7 @@ public class SecurityConfig {
          .cors(AbstractHttpConfigurer::disable)
          .csrf(AbstractHttpConfigurer::disable)
          .authorizeRequests()
-         .requestMatchers("/api/auth/**").permitAll()
+         .requestMatchers("/api/students/count").permitAll()
          .anyRequest().authenticated()
          .and()
          .authenticationProvider(authenticationProvider())
