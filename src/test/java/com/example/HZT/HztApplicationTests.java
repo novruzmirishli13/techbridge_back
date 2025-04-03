@@ -9,6 +9,5 @@ class HztApplicationTests {
 	@Test
 	void contextLoads() {
 	}
-	
 
 }

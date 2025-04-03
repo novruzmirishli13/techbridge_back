@@ -2,6 +2,7 @@ package com.example.HZT;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import java.util.Collections;
 
 @SpringBootApplication
 public class HztApplication {
@@ -21,6 +22,9 @@ public class HztApplication {
         }
 
         System.out.println("Uygulama portu: " + port);
-        SpringApplication.run(HztApplication.class, args);
+
+        SpringApplication app = new SpringApplication(HztApplication.class);
+        app.setDefaultProperties(Collections.singletonMap("server.port", port));
+        app.run(args);
     }
 }

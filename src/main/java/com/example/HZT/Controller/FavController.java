@@ -5,7 +5,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 public class FavController {
-     @RequestMapping("favicon.ico")
-    public void favicon() {
+    @RequestMapping("favicon.ico")
+    public String favicon() {
+        return "forward:/"; 
+        
     }
 }
+
