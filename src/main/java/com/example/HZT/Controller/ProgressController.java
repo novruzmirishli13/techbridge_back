@@ -29,12 +29,8 @@ public class ProgressController {
             Progress existingProgress = existing.get();
             existingProgress.setProgressLevel(progress.getProgressLevel());
             savedProgress = progressRepository.save(existingProgress);
-            System.out.println("Updated progress for userId=" + progress.getUserId() +
-                               ", lesson=" + progress.getLessonName());
         } else {
             savedProgress = progressRepository.save(progress);
-            System.out.println("Created new progress for userId=" + progress.getUserId() +
-                               ", lesson=" + progress.getLessonName());
         }
 
         return ResponseEntity.ok(savedProgress);
@@ -48,10 +44,8 @@ public class ProgressController {
         Optional<Progress> progress = progressRepository.findByUserIdAndLessonName(userId, lessonName);
 
         if (progress.isPresent()) {
-            System.out.println("Fetched progress for userId=" + userId + ", lesson=" + lessonName);
             return ResponseEntity.ok(progress.get());
         } else {
-            System.out.println("No progress found for userId=" + userId + ", lesson=" + lessonName);
             return ResponseEntity.notFound().build();
         }
     }

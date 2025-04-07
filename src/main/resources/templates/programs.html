@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head><title>Saved Programs</title></head>
+<body>
+<h1>Bütün Proqramlar</h1>
+<ul>
+    <li th:each="program : ${programs}">
+        Proqram #[[${program.id}]]
+        <ul>
+            <li th:each="block : ${program.blocks}">
+                İstiqamət: [[${block.direction}]], Hərəkət: [[${block.action}]]
+            </li>
+        </ul>
+    </li>
+</ul>
+</body>
+</html>

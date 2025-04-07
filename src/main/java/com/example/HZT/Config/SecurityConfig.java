@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -31,27 +32,29 @@ public class SecurityConfig {
     }
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-    	 http
-         .cors(AbstractHttpConfigurer::disable)
-         .csrf(AbstractHttpConfigurer::disable)
-         .authorizeRequests()
-         .requestMatchers("/api/count").permitAll()
-         .requestMatchers("/api/auth/**").permitAll()
-         .requestMatchers("api/game/execute/").permitAll()
-         .requestMatchers("api/game/*").permitAll()
-         .requestMatchers("api/events").permitAll()
-         .requestMatchers("api/images/upload/*").permitAll()
-         .requestMatchers("api/images/*").permitAll()
-         .requestMatchers("api/progress/update").permitAll()
-         .requestMatchers("api/progress/*/*").permitAll()
-         .anyRequest().authenticated()
-         .and()
-         .authenticationProvider(authenticationProvider())
-         .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+     http
+     .cors(Customizer.withDefaults())
+     .csrf(AbstractHttpConfigurer::disable)
+     .authorizeRequests()
+     .requestMatchers("/api/count").permitAll()
+     .requestMatchers("api/testimonials/*").permitAll()
+     .requestMatchers("/api/auth/**").permitAll()
+     .requestMatchers("api/game/execute/").permitAll()
+     .requestMatchers("api/game/*").permitAll()
+     .requestMatchers("api/events").permitAll()
+     .requestMatchers("api/images/upload/*").permitAll()
+     .requestMatchers("api/images/*").permitAll()
+     .requestMatchers("api/progress/update").permitAll()
+     .requestMatchers("api/progress/*/*").permitAll()
+     .anyRequest().authenticated()
+     .and()
+     .authenticationProvider(authenticationProvider())
+     .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
- return http.build();
-    }
+     return http.build();
+}
+
 
     @Bean
     public AuthenticationProvider authenticationProvider() {
