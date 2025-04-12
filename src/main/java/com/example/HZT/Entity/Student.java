@@ -1,12 +1,8 @@
 package com.example.HZT.Entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 
-@Entity(name = "students")
+@Entity
 public class Student {
 
     @Id
@@ -17,7 +13,8 @@ public class Student {
     private int age;
 
     @ManyToOne
-    private User user; 
+    @JoinColumn(name = "user_id")  // This is the foreign key in the students table
+    private User user;  // This creates the Many-to-One relationship
 
     public Long getId() {
         return id;
