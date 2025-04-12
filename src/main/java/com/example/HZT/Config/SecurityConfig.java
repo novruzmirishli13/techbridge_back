@@ -1,8 +1,7 @@
 package com.example.HZT.Config;
 
-import com.example.HZT.Security.JwtAuthenticationFilter;
-import com.example.HZT.Service.CustomUserDetailsService;
-import org.springframework.beans.factory.annotation.Value;
+import java.util.List;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -21,7 +20,9 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import java.util.Arrays;
+import com.example.HZT.Security.JwtAuthenticationFilter;
+import com.example.HZT.Service.CustomUserDetailsService;
+
 
 @Configuration
 @EnableWebSecurity
@@ -29,41 +30,50 @@ public class SecurityConfig {
 
     private final CustomUserDetailsService customUserDetailsService;
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
-
-    // Inject frontend URL from application.properties
-    @Value("${frontend.url}")
-    private String frontendUrl;
-
+    
     public SecurityConfig(CustomUserDetailsService customUserDetailsService, JwtAuthenticationFilter jwtAuthenticationFilter) {
-        this.customUserDetailsService = customUserDetailsService;
-        this.jwtAuthenticationFilter = jwtAuthenticationFilter;
+    	this.customUserDetailsService = customUserDetailsService;
+    	this.jwtAuthenticationFilter = jwtAuthenticationFilter;
     }
 
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
-            .cors(Customizer.withDefaults())
-            .csrf(AbstractHttpConfigurer::disable)
-            .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/api/count").permitAll()
-                .requestMatchers("/api/login").permitAll()
-                .requestMatchers("/api/testimonials/**").permitAll()
-                .requestMatchers("/api/auth/**").permitAll()
-                .requestMatchers("/api/game/execute/**").permitAll()
-                .requestMatchers("/game/programs").permitAll()
-                .requestMatchers("/game/run").permitAll()
-                .requestMatchers("/game/execute").permitAll()
-                .requestMatchers("/api/game/**").permitAll()
-                .requestMatchers("/api/events").permitAll()
-                .requestMatchers("/api/progress/update").permitAll()
-                .requestMatchers("/api/progress/*/*").permitAll()
-                .anyRequest().authenticated()
-            )
-            .authenticationProvider(authenticationProvider())
-            .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+  @Bean
+public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    http
+        .cors(Customizer.withDefaults()) // CORS desteğini aktif et
+        .csrf(AbstractHttpConfigurer::disable)
+        .authorizeRequests()
+        .requestMatchers("/api/count").permitAll()
+        .requestMatchers("/api/login").permitAll()
+        .requestMatchers("api/testimonials/*").permitAll()
+        .requestMatchers("/api/auth/**").permitAll()
+        .requestMatchers("api/game/execute/").permitAll()
+        .requestMatchers("/game/programs").permitAll()
+        .requestMatchers("/game/run").permitAll()
+        .requestMatchers("game/execute").permitAll()
+        .requestMatchers("api/game/*").permitAll()
+        .requestMatchers("api/events").permitAll()
+        .requestMatchers("api/progress/update").permitAll()
+        .requestMatchers("api/progress//").permitAll()
+        .anyRequest().authenticated()
+        .and()
+        .authenticationProvider(authenticationProvider())
+        .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
-        return http.build();
-    }
+    return http.build();
+}
+
+@Bean
+public CorsConfigurationSource corsConfigurationSource() {
+    CorsConfiguration configuration = new CorsConfiguration();
+    configuration.setAllowedOrigins(List.of("http://localhost:3000")); // Buraya frontend domainini yaz
+    configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+    configuration.setAllowedHeaders(List.of("Authorization", "Content-Type"));
+    configuration.setAllowCredentials(true); // Eğer cookie veya token ile istek atıyorsan true kalmalı
+
+    UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+    source.registerCorsConfiguration("/**", configuration); // Tüm endpoint’ler için geçerli
+    return source;
+}
 
     @Bean
     public AuthenticationProvider authenticationProvider() {
@@ -81,22 +91,5 @@ public class SecurityConfig {
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
         return config.getAuthenticationManager();
-    }
-
-    // ✅ CORS config with dynamic frontend URL
-    @Bean
-    public CorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration config = new CorsConfiguration();
-        
-        // Dynamically allow the frontend URL configured in application.properties
-        config.setAllowedOrigins(Arrays.asList(frontendUrl));  // Using the injected URL from properties file
-        config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        config.setAllowedHeaders(Arrays.asList("*"));
-        config.setAllowCredentials(true);
-
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", config);
-
-        return source;
-    }
+}
 }
