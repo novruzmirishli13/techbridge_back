@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Controller
-@CrossOrigin(origins = "http://localhost:8081")
+@RequestMapping("/game")
 public class GameControllerh {
 
     @Autowired 
@@ -27,12 +27,14 @@ public class GameControllerh {
 
     @GetMapping("/")
     public String showForm(Model model) {
+        System.out.println("Showing form...");
         model.addAttribute("directions", "");
-        return "index.html";
+        return "index";
     }
+    
 
     @PostMapping("/run")
-    public String runProgram(@RequestParam String directions, Model model) {
+    public String runProgram(@RequestParam("directions") String directions, Model model){
         List<Block> blocks = Arrays.stream(directions.split(","))
                 .map(String::trim)
                 .map(dir -> {

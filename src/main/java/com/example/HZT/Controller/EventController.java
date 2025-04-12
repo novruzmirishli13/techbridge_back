@@ -13,6 +13,7 @@ import com.example.HZT.Repository.EventRepository;
 @RestController
 @RequestMapping("/api/events")
 public class EventController {
+    
     @Autowired
     private EventRepository eventRepository;
 

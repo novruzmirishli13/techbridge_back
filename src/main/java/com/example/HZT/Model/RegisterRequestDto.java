@@ -3,8 +3,10 @@ package com.example.HZT.Model;
 public class RegisterRequestDto {
 
 	private String username;
+	private String name;
 	private String email;
 	private String password;
+	private String phoneNumber;
 
 	public String getUsername() {
 		return username;
@@ -30,4 +32,18 @@ public class RegisterRequestDto {
 		this.password = password;
 	}
 
+	public String getPhoneNumber() {
+		return phoneNumber;
+	}
+
+	public void setPhoneNumber(String phoneNumber) {
+		this.phoneNumber = phoneNumber;
+	}
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
 }
