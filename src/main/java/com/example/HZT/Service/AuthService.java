@@ -5,8 +5,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.example.HZT.Entity.User;
-import com.example.HZT.Enum.UserType;
 import com.example.HZT.Entity.Student;
+import com.example.HZT.Enum.UserType;
 import com.example.HZT.Exception.NotFoundException;
 import com.example.HZT.Model.AuthResponse;
 import com.example.HZT.Model.LoginRequestDto;
@@ -37,22 +37,22 @@ public class AuthService {
         if (userRepository.existsByUsername(registerRequest.getUsername())) {
             throw new BadRequestException("Username is already taken");
         }
+
         if (userRepository.existsByEmail(registerRequest.getEmail())) {
             throw new BadRequestException("Email is already in use");
         }
+
+        if (registerRequest.getUserType() == null ||
+            !(registerRequest.getUserType() == UserType.STUDENT || registerRequest.getUserType() == UserType.PARENT)) {
+            throw new BadRequestException("Invalid user type");
+        }
+
         User user = new User();
         user.setName(registerRequest.getName());
         user.setUsername(registerRequest.getUsername());
         user.setEmail(registerRequest.getEmail());
         user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
-
-        if (registerRequest.getUserType() == UserType.STUDENT) {
-            user.setUserType(UserType.STUDENT);
-        } else if (registerRequest.getUserType() == UserType.PARENT) {
-            user.setUserType(UserType.PARENT);
-        } else {
-            throw new BadRequestException("Invalid user type");
-        }
+        user.setUserType(registerRequest.getUserType());
 
         userRepository.save(user);
 
@@ -62,7 +62,6 @@ public class AuthService {
             student.setAge(18);
             student.setUser(user);
             studentRepository.save(student);
-
             return "User registered as Student successfully";
         }
 
