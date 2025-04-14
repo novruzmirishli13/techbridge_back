@@ -65,7 +65,7 @@ public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Excepti
 @Bean
 public CorsConfigurationSource corsConfigurationSource() {
     CorsConfiguration configuration = new CorsConfiguration();
-    configuration.setAllowedOrigins(List.of("http://localhost:5173")); // Buraya frontend domainini yaz
+    configuration.setAllowedOrigins(List.of("https://tech-bridge-lac.vercel.app/")); // Buraya frontend domainini yaz
     configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
     configuration.setAllowedHeaders(List.of("Authorization", "Content-Type"));
     configuration.setAllowCredentials(true); // Eğer cookie veya token ile istek atıyorsan true kalmalı

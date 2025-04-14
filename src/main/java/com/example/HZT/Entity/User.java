@@ -3,6 +3,8 @@ package com.example.HZT.Entity;
 import jakarta.persistence.*;
 import java.util.Set;
 
+import com.example.HZT.Enum.UserType;
+
 @Entity
 @Table(name = "users")
 public class User {
@@ -16,10 +18,12 @@ public class User {
     private String email;
     private String password;
 
+    @Enumerated(EnumType.STRING)
+    private UserType userType; 
+
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<Student> students;
 
-    // Getters and Setters
     public Long getId() {
         return id;
     }
@@ -58,6 +62,14 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public UserType getUserType() {
+        return userType;
+    }
+
+    public void setUserType(UserType userType) {
+        this.userType = userType;
     }
 
     public Set<Student> getStudents() {
