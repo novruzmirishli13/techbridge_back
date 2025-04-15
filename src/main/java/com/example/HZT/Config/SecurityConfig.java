@@ -23,57 +23,57 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import com.example.HZT.Security.JwtAuthenticationFilter;
 import com.example.HZT.Service.CustomUserDetailsService;
 
-
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
 
     private final CustomUserDetailsService customUserDetailsService;
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
-    
+
     public SecurityConfig(CustomUserDetailsService customUserDetailsService, JwtAuthenticationFilter jwtAuthenticationFilter) {
-    	this.customUserDetailsService = customUserDetailsService;
-    	this.jwtAuthenticationFilter = jwtAuthenticationFilter;
+        this.customUserDetailsService = customUserDetailsService;
+        this.jwtAuthenticationFilter = jwtAuthenticationFilter;
     }
 
-  @Bean
-public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-    http
-        .cors(Customizer.withDefaults()) // CORS desteğini aktif et
-        .csrf(AbstractHttpConfigurer::disable)
-        .authorizeRequests()
-        .requestMatchers("/api/count").permitAll()
-        .requestMatchers("/api/login").permitAll()
-        .requestMatchers("api/testimonials/*").permitAll()
-        .requestMatchers("/api/auth/**").permitAll()
-        .requestMatchers("api/game/execute/").permitAll()
-        .requestMatchers("/game/programs").permitAll()
-        .requestMatchers("/game/run").permitAll()
-        .requestMatchers("game/execute").permitAll()
-        .requestMatchers("api/game/*").permitAll()
-        .requestMatchers("api/events").permitAll()
-        .requestMatchers("api/progress/update").permitAll()
-        .requestMatchers("api/progress//").permitAll()
-        .anyRequest().authenticated()
-        .and()
-        .authenticationProvider(authenticationProvider())
-        .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http
+            .cors(Customizer.withDefaults())
+            .csrf(AbstractHttpConfigurer::disable)
+            .authorizeRequests()
+            .requestMatchers("/api/count").permitAll()
+            .requestMatchers("/api/login").permitAll()
+            .requestMatchers("/api/testimonials/**").permitAll()
+            .requestMatchers("/api/auth/**").permitAll()
+            .requestMatchers("/api/game/execute").permitAll()
+            .requestMatchers("/game/programs").permitAll()
+            .requestMatchers("/game/run").permitAll()
+            .requestMatchers("/game/execute").permitAll()
+            .requestMatchers("/api/game/**").permitAll()
+            .requestMatchers("/api/events").permitAll()
+            .requestMatchers("/api/progress/update").permitAll()
+            .requestMatchers("/api/progress/**").permitAll()
+            .anyRequest().authenticated()
+            .and()
+            .authenticationProvider(authenticationProvider())
+            .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
-    return http.build();
-}
+        return http.build();
+    }
 
-@Bean
-public CorsConfigurationSource corsConfigurationSource() {
-    CorsConfiguration configuration = new CorsConfiguration();
-    configuration.setAllowedOrigins(List.of("https://tech-bridge-169m.vercel.app")); // Buraya frontend domainini yaz
-    configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-    configuration.setAllowedHeaders(List.of("Authorization", "Content-Type"));
-    configuration.setAllowCredentials(true); // Eğer cookie veya token ile istek atıyorsan true kalmalı
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(List.of("https://tech-bridge-169m.vercel.app"));
+        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        configuration.setAllowedHeaders(List.of("Authorization", "Content-Type"));
+        configuration.setExposedHeaders(List.of("Authorization"));
+        configuration.setAllowCredentials(true);
 
-    UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-    source.registerCorsConfiguration("/**", configuration); // Tüm endpoint’ler için geçerli
-    return source;
-}
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
+    }
 
     @Bean
     public AuthenticationProvider authenticationProvider() {
@@ -91,5 +91,5 @@ public CorsConfigurationSource corsConfigurationSource() {
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
         return config.getAuthenticationManager();
-}
+    }
 }
